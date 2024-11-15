@@ -10,12 +10,28 @@
             "description": "Generated server url"
         }
     ],
+    "tags": [
+        {
+            "name": "Admin Controller",
+            "description": "Endpoints for managing users, tasks, and PKKMB information"
+        },
+        {
+            "name": "Auth Controller",
+            "description": "Endpoints for authentication and user registration"
+        },
+        {
+            "name": "Siswa Controller",
+            "description": "Endpoints for mahasiswa to access tasks, PKKMB information, and change their password."
+        }
+    ],
     "paths": {
         "/siswa/task/{id}/submit": {
             "put": {
                 "tags": [
-                    "siswa-controller"
+                    "Siswa Controller"
                 ],
+                "summary": "Submit a task",
+                "description": "Submit a file for a specific task by task ID.",
                 "operationId": "submitTask",
                 "parameters": [
                     {
@@ -48,7 +64,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Task submitted successfully",
                         "content": {
                             "*/*": {
                                 "schema": {
@@ -78,7 +94,7 @@
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Task not found",
                         "content": {
                             "*/*": {
                                 "schema": {
@@ -88,7 +104,7 @@
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "Failed to save file",
                         "content": {
                             "*/*": {
                                 "schema": {
@@ -103,8 +119,10 @@
         "/siswa/change-password": {
             "put": {
                 "tags": [
-                    "siswa-controller"
+                    "Siswa Controller"
                 ],
+                "summary": "Change password",
+                "description": "Change the password of the currently logged-in student.",
                 "operationId": "changePassword",
                 "requestBody": {
                     "content": {
@@ -118,7 +136,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Password changed successfully",
                         "content": {
                             "*/*": {
                                 "schema": {
@@ -128,7 +146,7 @@
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Invalid old password",
                         "content": {
                             "*/*": {
                                 "schema": {
@@ -173,8 +191,10 @@
         "/admin/user/{id}": {
             "put": {
                 "tags": [
-                    "admin-controller"
+                    "Admin Controller"
                 ],
+                "summary": "Update an existing user",
+                "description": "Endpoint to update user details by ID",
                 "operationId": "updateUser",
                 "parameters": [
                     {
@@ -252,8 +272,10 @@
             },
             "delete": {
                 "tags": [
-                    "admin-controller"
+                    "Admin Controller"
                 ],
+                "summary": "Delete a user",
+                "description": "Endpoint to delete a user by ID",
                 "operationId": "deleteUser",
                 "parameters": [
                     {
@@ -316,8 +338,10 @@
         "/admin/task/{id}": {
             "put": {
                 "tags": [
-                    "admin-controller"
+                    "Admin Controller"
                 ],
+                "summary": "Update a task",
+                "description": "Endpoint to update task details by ID",
                 "operationId": "updateTask",
                 "parameters": [
                     {
@@ -395,8 +419,10 @@
             },
             "delete": {
                 "tags": [
-                    "admin-controller"
+                    "Admin Controller"
                 ],
+                "summary": "Delete a task",
+                "description": "Endpoint to delete a task by ID",
                 "operationId": "deleteTask",
                 "parameters": [
                     {
@@ -459,8 +485,10 @@
         "/admin/pkkmbinfo/{id}": {
             "put": {
                 "tags": [
-                    "admin-controller"
+                    "Admin Controller"
                 ],
+                "summary": "Update PKKMB information",
+                "description": "Endpoint to update PKKMB information by ID",
                 "operationId": "updatePKKMBInfo",
                 "parameters": [
                     {
@@ -538,8 +566,10 @@
             },
             "delete": {
                 "tags": [
-                    "admin-controller"
+                    "Admin Controller"
                 ],
+                "summary": "Delete PKKMB information",
+                "description": "Endpoint to delete PKKMB information by ID",
                 "operationId": "deletePKKMBInfo",
                 "parameters": [
                     {
@@ -602,8 +632,10 @@
         "/auth/register": {
             "post": {
                 "tags": [
-                    "auth-controller"
+                    "Auth Controller"
                 ],
+                "summary": "Register a new user",
+                "description": "Endpoint to register a new user. Validates that ADMIN users have a valid ID Panitia and SISWA users have a NIM.",
                 "operationId": "registerUser",
                 "requestBody": {
                     "content": {
@@ -617,7 +649,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "User registered successfully",
                         "content": {
                             "*/*": {
                                 "schema": {
@@ -627,14 +659,8 @@
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
-                        "content": {
-                            "*/*": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
+                        "description": "Invalid input",
+                        "content": {}
                     },
                     "403": {
                         "description": "Forbidden",
@@ -672,10 +698,13 @@
         "/auth/login": {
             "post": {
                 "tags": [
-                    "auth-controller"
+                    "Auth Controller"
                 ],
+                "summary": "Login",
+                "description": "Endpoint to login, accepting either 'nim' for SISWA or 'id_panitia' for ADMIN.",
                 "operationId": "login",
                 "requestBody": {
+                    "description": "Authentication request containing identifier and password",
                     "content": {
                         "application/json": {
                             "schema": {
@@ -687,7 +716,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Login successful",
                         "content": {
                             "*/*": {
                                 "schema": {
@@ -705,6 +734,9 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
                     },
                     "403": {
                         "description": "Forbidden",
@@ -742,8 +774,10 @@
         "/admin/user": {
             "post": {
                 "tags": [
-                    "admin-controller"
+                    "Admin Controller"
                 ],
+                "summary": "Create a new user",
+                "description": "Endpoint to create a new user with role ADMIN or SISWA",
                 "operationId": "createUser",
                 "requestBody": {
                     "content": {
@@ -812,8 +846,10 @@
         "/admin/task": {
             "post": {
                 "tags": [
-                    "admin-controller"
+                    "Admin Controller"
                 ],
+                "summary": "Create a new task",
+                "description": "Endpoint to create a new task",
                 "operationId": "createTask",
                 "requestBody": {
                     "content": {
@@ -882,8 +918,10 @@
         "/admin/pkkmbinfo": {
             "post": {
                 "tags": [
-                    "admin-controller"
+                    "Admin Controller"
                 ],
+                "summary": "Create new PKKMB information",
+                "description": "Endpoint to create new PKKMB information",
                 "operationId": "createPKKMBInfo",
                 "requestBody": {
                     "content": {
@@ -952,8 +990,10 @@
         "/siswa/tasks/{nim}": {
             "get": {
                 "tags": [
-                    "siswa-controller"
+                    "Siswa Controller"
                 ],
+                "summary": "Get tasks by NIM",
+                "description": "Retrieve a list of tasks assigned to the student based on their NIM.",
                 "operationId": "getTasksByNim",
                 "parameters": [
                     {
@@ -967,14 +1007,11 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "List of tasks retrieved successfully",
                         "content": {
                             "*/*": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/TaskDTO"
-                                    }
+                                    "$ref": "#/components/schemas/TaskDTO"
                                 }
                             }
                         }
@@ -990,7 +1027,7 @@
                         }
                     },
                     "403": {
-                        "description": "Forbidden",
+                        "description": "Access Denied: You can only access your own tasks.",
                         "content": {
                             "*/*": {
                                 "schema": {
@@ -1025,19 +1062,18 @@
         "/siswa/pkkmbinfos": {
             "get": {
                 "tags": [
-                    "siswa-controller"
+                    "Siswa Controller"
                 ],
+                "summary": "Get PKKMB information",
+                "description": "Retrieve a list of all PKKMB information available to students.",
                 "operationId": "getPKKMBInfo",
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "List of PKKMB information retrieved successfully",
                         "content": {
                             "*/*": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/PKKMBInfoDTO"
-                                    }
+                                    "$ref": "#/components/schemas/PKKMBInfoDTO"
                                 }
                             }
                         }
@@ -1088,8 +1124,10 @@
         "/admin/users": {
             "get": {
                 "tags": [
-                    "admin-controller"
+                    "Admin Controller"
                 ],
+                "summary": "Get all users",
+                "description": "Retrieve a list of all users in the system",
                 "operationId": "getAllUsers",
                 "responses": {
                     "200": {
@@ -1151,8 +1189,10 @@
         "/admin/tasks": {
             "get": {
                 "tags": [
-                    "admin-controller"
+                    "Admin Controller"
                 ],
+                "summary": "Get all tasks",
+                "description": "Retrieve a list of all tasks in the system",
                 "operationId": "getAllTasks",
                 "responses": {
                     "200": {
@@ -1214,8 +1254,10 @@
         "/admin/task/{id}/file": {
             "get": {
                 "tags": [
-                    "admin-controller"
+                    "Admin Controller"
                 ],
+                "summary": "Download task file",
+                "description": "Endpoint to download a file submitted for a task by ID",
                 "operationId": "downloadTaskFile",
                 "parameters": [
                     {
@@ -1286,8 +1328,10 @@
         "/admin/pkkmbinfos": {
             "get": {
                 "tags": [
-                    "admin-controller"
+                    "Admin Controller"
                 ],
+                "summary": "Get all PKKMB information",
+                "description": "Retrieve a list of all PKKMB information",
                 "operationId": "getAllPKKMBInfo",
                 "responses": {
                     "200": {
